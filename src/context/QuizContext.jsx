@@ -1,14 +1,17 @@
 import React, { createContext, useContext, useEffect, useReducer } from "react";
+import { questions as data } from "/data/questions.js";
 
 const QuizContext = createContext();
 
 const SECS_PER_QUESTION = 30;
 
 const initialState = {
-  questions: [],
+  // questions: [],
+  questions: data,
 
   //loading, error, ready, active, finished
-  status: "loading",
+  // status: "loading",
+  status: "ready",
   index: 0,
   answer: null,
   points: 0,
@@ -86,22 +89,23 @@ function QuizProvider({ children }) {
     return acc + curr.points;
   }, 0);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await fetch("http://localhost:8000/questions");
+  //for fake server (json-server)
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       const res = await fetch("http://localhost:8000/questions");
 
-        if (!res.ok) throw new Error("Error fetching data");
+  //       if (!res.ok) throw new Error("Error fetching data");
 
-        const data = await res.json();
-        dispatch({ type: "dataReceived", payload: data });
-      } catch (err) {
-        dispatch({ type: "dataFailed" });
-      }
-    }
+  //       const data = await res.json();
+  //       dispatch({ type: "dataReceived", payload: data });
+  //     } catch (err) {
+  //       dispatch({ type: "dataFailed" });
+  //     }
+  //   }
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   return (
     <QuizContext.Provider
